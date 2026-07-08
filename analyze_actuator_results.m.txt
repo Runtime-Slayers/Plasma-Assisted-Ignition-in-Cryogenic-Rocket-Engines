@@ -1,0 +1,73 @@
+% analyze_actuator_results.m
+clc; clear; close all;
+
+if ~exist('results/actuator_sim_results.mat','file')
+    error('Run baseline_with_actuator.m first.');
+end
+
+load('results/actuator_sim_results.mat','x','P_snap','T_snap','time_snap','peak_pos','peak_amp','x0','T_act','pulse_width');
+
+% 1. Plot a few snapshots (pressure)
+figure('Color','w');
+nsnaps = size(P_snap,2);
+kplot = round(linspace(1, nsnaps, min(6, nsnaps)));
+for i=1:length(kplot)
+    plot(x, P_snap(:,kplot(i))/1e5, 'DisplayName', sprintf('t=%.4f s', time_snap(kplot(i))));
+    hold on;
+end
+xlabel('Position (m)'); ylabel('Pressure (x10^5 Pa)');
+title('Pressure snapshots (selected)');
+legend('show'); grid on;
+
+% 2. Peak position vs time (unwrap for circular wrap)
+pos = peak_pos;
+% unwrap: ensure continuous by adding/subtracting L where needed
+L = max(x) + (x(2)-x(1));
+pos_unwrapped = pos;
+for i=2:length(pos)
+    delta = pos(i) - pos_unwrapped(i-1);
+    if delta > L/2
+        pos_unwrapped(i:end) = pos_unwrapped(i:end) - L;
+    elseif delta < -L/2
+        pos_unwrapped(i:end) = pos_unwrapped(i:end) + L;
+    end
+end
+
+% 3. Compute instantaneous speed (m/s)
+dt_snap = diff(time_snap);
+dpos = diff(pos_unwrapped);
+inst_speed = dpos ./ dt_snap;
+avg_speed = median(inst_speed);
+fprintf('Median wave speed ~ %.3f m/s\n', avg_speed);
+
+figure('Color','w');
+subplot(2,1,1);
+plot(time_snap, pos_unwrapped, '-o'); xlabel('Time (s)'); ylabel('Peak position (m)');
+title('Peak position vs time (unwrapped)'); grid on;
+
+subplot(2,1,2);
+plot(time_snap(2:end), inst_speed, '-o'); xlabel('Time (s)'); ylabel('Instantaneous speed (m/s)');
+title('Instantaneous wave speed'); grid on;
+
+% 4. Peak amplitude statistics
+figure('Color','w');
+plot(time_snap, peak_amp,'-o'); xlabel('Time (s)'); ylabel('Peak Pressure (Pa)');
+title('Peak amplitude vs time'); grid on;
+fprintf('Peak pressure: mean=%.2e Pa, std=%.2e Pa\n', mean(peak_amp), std(peak_amp));
+
+% 5. Frequency analysis of peak position (to detect lock-in)
+Y = pos_unwrapped - mean(pos_unwrapped);
+Fs_snap = 1 / median(dt_snap);     % sampling frequency of snapshots
+Lfft = length(Y);
+Yf = fft(Y - mean(Y));
+P2 = abs(Yf/Lfft);
+P1 = P2(1:floor(Lfft/2)+1);
+f = Fs_snap*(0:floor(Lfft/2))/Lfft;
+
+figure('Color','w');
+plot(f, P1); xlabel('Frequency (Hz)'); ylabel('|P1(f)|');
+title('Frequency content of peak position (snapshots)'); xlim([0 5000]); grid on;
+
+% Save analysis plots
+saveas(gcf, 'results/actuator_analysis_freq.png');
+disp('✅ Analysis complete. Plots saved (frequency plot).');

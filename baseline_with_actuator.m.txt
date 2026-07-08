@@ -1,0 +1,176 @@
+% baseline_with_actuator_final.m
+% 1D Rotating Detonation Engine (RDE) model with periodic plasma actuator
+% Complete, robust, interactive plotting + Command Window text output
+
+clc; clear; close all;
+
+% --- 0. Output folder ---
+results_folder = 'results';
+if ~exist(results_folder, 'dir')
+    mkdir(results_folder);
+end
+
+% --- 1. Domain & physical parameters ---
+L = 1.0;           % Ring circumference (m)
+N = 400;           % Number of spatial points
+dx = L / N;
+x = linspace(0, L-dx, N)'; % Column vector
+
+dt = 1e-5;         % Time step (s)
+Tmax = 0.005;      % Total simulation time (s)
+steps = floor(Tmax/dt);
+
+R = 287;           % Gas constant for air (J/kg·K)
+gamma = 1.4;
+Cp = 1000;         % Constant pressure specific heat (J/kg·K)
+rho = 1.2 * ones(N,1); % Uniform density (kg/m³)
+
+% Reaction parameters
+q = 5e6;           % Heat release (J/kg)
+k = 1000;          % Pre-exponential factor (1/s)
+Ea = 1e5;          % Activation energy (J/mol)
+
+% --- 2. Initial fields ---
+T = 300 * ones(N,1);       % Initial temperature (K)
+P = rho .* R .* T;         % Initial pressure (Pa)
+
+% Ignition: Gaussian pressure spike near 0.1 m
+P = P + 5e5 * exp(-((x-0.1)/0.01).^2);
+T = P ./ (rho * R);
+
+% --- 3. Actuator parameters ---
+x0 = 0.25;                % Actuator center location (m)
+sigma_x = 0.01;           % Spatial width (m)
+T_act = 2e-4;             % Actuator period (s)
+pulse_width = 4e-5;       % Pulse duration (s)
+S_act_amp = 2e8;          % Energy density amplitude (W/m³)
+
+gauss_spatial = exp(-((x - x0).^2) / (2 * sigma_x^2));
+gauss_spatial = gauss_spatial / max(gauss_spatial);
+
+% --- 4. Diagnostics and storage ---
+snap_interval = 50;                             
+num_snaps = ceil(steps / snap_interval) + 1;
+snap_i = 1;
+
+P_snap = zeros(N, num_snaps);
+T_snap = zeros(N, num_snaps);
+time_snap = zeros(1, num_snaps);
+peak_pos = nan(1, num_snaps);
+peak_amp = nan(1, num_snaps);
+
+% Store initial snapshot
+P_snap(:,snap_i) = P;
+T_snap(:,snap_i) = T;
+time_snap(snap_i) = 0;
+[~, idx0] = max(P);
+peak_pos(snap_i) = x(idx0);
+peak_amp(snap_i) = P(idx0);
+snap_i = snap_i + 1;
+
+% --- 5. Main simulation loop ---
+t = 0;
+for n = 1:steps
+    t = t + dt;
+
+    % Chemical reaction (Arrhenius rate)
+    rate = k * exp(-Ea ./ (R * T));
+    dT_react = (q .* rate * dt) ./ (rho * Cp);
+    T = T + dT_react;
+
+    % Update pressure
+    P = rho .* R .* T;
+
+    % Actuator pulse injection
+    if mod(t, T_act) < pulse_width
+        S_act = S_act_amp * gauss_spatial;
+        dT_act = (S_act ./ (rho * Cp)) * dt;
+        T = T + dT_act;
+        P = rho .* R .* T;
+    end
+
+    % Wave advection by array rotation every 5 timesteps
+    if mod(n, 5) == 0
+        P = circshift(P, -1);
+        T = P ./ (rho * R);
+    end
+
+    % Save snapshots every snap_interval steps
+    if mod(n, snap_interval) == 0
+        P_snap(:, snap_i) = P;
+        T_snap(:, snap_i) = T;
+        time_snap(snap_i) = t;
+        [~, idx] = max(P);
+        peak_pos(snap_i) = x(idx);
+        peak_amp(snap_i) = P(idx);
+        snap_i = snap_i + 1;
+    end
+end
+
+% Trim unused pre-allocated space
+P_snap = P_snap(:,1:(snap_i-1));
+T_snap = T_snap(:,1:(snap_i-1));
+time_snap = time_snap(1:(snap_i-1));
+peak_pos = peak_pos(1:(snap_i-1));
+peak_amp = peak_amp(1:(snap_i-1));
+
+% --- 6. Save results ---
+try
+    save(fullfile(results_folder, 'actuator_sim_results.mat'), ...
+        'x', 'P_snap', 'T_snap', 'time_snap', ...
+        'peak_pos', 'peak_amp', 'x0', 'T_act', 'pulse_width', ...
+        'S_act_amp', 'sigma_x', 'L', 'N', 'dt', 'Tmax');
+    disp(['✅ Simulation complete. Results saved to: ', fullfile(results_folder, 'actuator_sim_results.mat')]);
+catch ERR
+    disp('❌ Error saving results:');
+    disp(ERR.message);
+end
+
+% --- 7. Interactive visualization ---
+try
+    figure('Name', 'RDE Simulation Results', 'NumberTitle', 'off');
+
+    subplot(2,2,1);
+    imagesc(time_snap, x, P_snap);
+    axis xy;
+    colorbar;
+    xlabel('Time [s]');
+    ylabel('Position x [m]');
+    title('Pressure [Pa]');
+
+    subplot(2,2,2);
+    imagesc(time_snap, x, T_snap);
+    axis xy;
+    colorbar;
+    xlabel('Time [s]');
+    ylabel('Position x [m]');
+    title('Temperature [K]');
+
+    subplot(2,2,3);
+    plot(time_snap, peak_amp, 'k-', 'LineWidth', 1.5);
+    grid on;
+    xlabel('Time [s]');
+    ylabel('Peak Pressure [Pa]');
+    title('Peak Pressure vs Time');
+
+    subplot(2,2,4);
+    plot(time_snap, peak_pos, 'k-', 'LineWidth', 1.5);
+    grid on;
+    xlabel('Time [s]');
+    ylabel('Peak Position [m]');
+    title('Peak Position vs Time');
+
+    sgtitle('RDE Simulation Results');
+    drawnow; % Force immediate rendering
+
+catch ERR
+    disp('❌ Visualization failed.');
+    disp(ERR.message);
+end
+
+% --- 8. Summary output to MATLAB Command Window ---
+disp('--- Simulation Summary ---');
+disp(['Total simulation time: ', num2str(time_snap(end)), ' seconds']);
+disp(['Number of snapshots: ', num2str(length(time_snap))]);
+disp(['Peak pressure range: ', num2str(min(peak_amp)), ' Pa to ', num2str(max(peak_amp)), ' Pa']);
+disp(['Peak pressure position at final time: ', num2str(peak_pos(end)), ' m']);

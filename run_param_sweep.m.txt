@@ -1,0 +1,19 @@
+% run_param_sweep.m  - example parameter sweep
+amps = [1e7, 5e7, 2e8];
+T_acts = [2e-4, 5e-4, 1e-3];
+results_table = [];
+
+for ia = 1:length(amps)
+    for ib = 1:length(T_acts)
+        S_act_amp_local = amps(ia);
+        T_act_local = T_acts(ib);
+        % run simulation with these parameters by calling baseline_with_actuator.m
+        % a quick way: write small wrapper that sets these variables before calling simulation
+        save('temp_act_params.mat','S_act_amp_local','T_act_local');
+        baseline_with_actuator_wrapper('temp_act_params.mat');  % see note below
+        data = load('results/actuator_sim_results.mat','peak_pos','time_snap','peak_amp');
+        % compute metrics (mean speed etc) - reuse analyze logic
+        % store in results_table
+    end
+end
+save('results/param_sweep_summary.mat','results_table');

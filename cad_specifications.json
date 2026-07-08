@@ -1,0 +1,554 @@
+{
+  "metadata": {
+    "engine_name": "Plasma-Enhanced Raptor (10 kN Test)",
+    "design_date": "2026-05-01T18:56:56.632141",
+    "status": "Production CAD Ready",
+    "version": "1.0",
+    "revision": "A",
+    "total_assembly_parts": 0,
+    "total_fasteners": 0
+  },
+  "performance": {
+    "thrust_kN": 10.0,
+    "chamber_pressure_bar": 300.0,
+    "propellant": "CH4/LOX",
+    "expansion_ratio": 40,
+    "plasma_igniter_kW": 2.5
+  },
+  "major_components": {
+    "chamber": {
+      "type": "Combustion Chamber (Cylindrical)",
+      "material": "Copper-Nickel (GlidCop) - Inner; Inconel 718 - Outer",
+      "inner_diameter_mm": 2802.699510099479,
+      "inner_diameter_tol_mm": 0.05,
+      "length_mm": 94.99999999999999,
+      "wall_thickness_mm": 5.0,
+      "surface_finish_Ra_um": 0.8,
+      "pressure_rating_bar": 450.0,
+      "temperature_limit_K": 1100,
+      "parts": {
+        "inner_shell": {
+          "material": "Copper-Nickel (GlidCop)",
+          "dimensions_mm": [
+            2802.699510099479,
+            94.99999999999999,
+            3.0
+          ],
+          "weight_kg": 31.297368178706364,
+          "manufacturing": "Deep-draw + hoop stress analysis",
+          "surface_treatment": "Machining to Ra 0.8 um"
+        },
+        "outer_reinforcement": {
+          "material": "Inconel 718",
+          "dimensions_mm": [
+            2812.699510099479,
+            94.99999999999999,
+            4.0
+          ],
+          "weight_kg": 27.36362580426552,
+          "manufacturing": "Wrapping + brazing or bolted rings",
+          "surface_treatment": "Machining, no polish"
+        }
+      }
+    },
+    "nozzle": {
+      "type": "Convergent-Divergent Nozzle Assembly",
+      "material": "Copper-Nickel (inner); Inconel 718 (outer)",
+      "throat_diameter_mm": 886.2914048952443,
+      "throat_diameter_tol_mm": 0.02,
+      "exit_diameter_mm": 5605.399020198958,
+      "exit_diameter_tol_mm": 0.1,
+      "total_length_mm": 7139.779754679466,
+      "surface_finish_Ra_um": 0.4,
+      "pressure_rating_bar": 390.0,
+      "parts": {
+        "convergent_section": {
+          "material": "Copper-Nickel (GlidCop)",
+          "half_angle_deg": 45,
+          "length_mm": 28.499999999999996,
+          "inlet_diameter_mm": 2802.699510099479,
+          "outlet_diameter_mm": 886.2914048952443,
+          "manufacturing": "CNC turning + honing"
+        },
+        "throat_section": {
+          "material": "Copper-Nickel (GlidCop)",
+          "length_mm": 443.14570244762217,
+          "diameter_mm": 886.2914048952443,
+          "surface_treatment": "Ra 0.4 um (critical flow control)",
+          "manufacturing": "Precision grinding"
+        },
+        "divergent_section": {
+          "material": "Copper-Nickel inner + Inconel 718 outer",
+          "half_angle_deg": 15,
+          "length_mm": 7044.779754679466,
+          "inlet_diameter_mm": 886.2914048952443,
+          "outlet_diameter_mm": 5605.399020198958,
+          "manufacturing": "CNC turning + welding (cu-ni to inconel)"
+        }
+      }
+    }
+  },
+  "sub_assemblies": {
+    "cooling_jacket": {
+      "type": "Regenerative Cooling (Double-Wall)",
+      "outer_shell_material": "Inconel 718",
+      "coolant_passages_material": "Copper-Nickel",
+      "coolant_fluid": "Liquid Methane (if CH4/LOX) or Boiling Liquid Hydrogen (if H2/LOX)",
+      "nominal_wall_thickness_mm": 3.0,
+      "tolerance_mm": 0.2,
+      "passage_width_mm": 2.5,
+      "passage_height_mm": 2.0,
+      "flow_channels": 0,
+      "total_surface_area_m2": 6.286533371792371e-05,
+      "parts": {
+        "inner_wall": {
+          "material": "Copper-Nickel",
+          "thickness_mm": 2.0,
+          "manufacturing": "Deep-draw + machining"
+        },
+        "outer_wall": {
+          "material": "Inconel 718",
+          "thickness_mm": 3.0,
+          "manufacturing": "Wrapping + welding"
+        },
+        "inlet_port": {
+          "diameter_mm": 8.0,
+          "thread": "M8x1.0 (ISO)",
+          "material": "Stainless 316L",
+          "connection": "SAE J518 Code 61 (ISO 11237)"
+        },
+        "outlet_port": {
+          "diameter_mm": 10.0,
+          "thread": "M10x1.5 (ISO)",
+          "material": "Stainless 316L",
+          "connection": "SAE J518 Code 61"
+        }
+      }
+    },
+    "injector": {
+      "type": "Impingement + Coaxial Hybrid Injector",
+      "material": "Stainless 316L (face plate); Brass manifold",
+      "face_plate_thickness_mm": 20,
+      "fuel_elements": 191139,
+      "oxidizer_elements": 95569,
+      "orifice_diameter_mm": 1.0,
+      "orifice_tolerance_mm": 0.01,
+      "impingement_angle_deg": 60,
+      "injector_DP_bar": 52.5,
+      "parts": {
+        "faceplate": {
+          "material": "Stainless 316L",
+          "diameter_mm": 2522.4295590895313,
+          "thickness_mm": 20,
+          "mass_kg": 226.1946710584651,
+          "orifices": "191139 fuel @ 1.0mm, 95569 oxidizer @ 0.8mm",
+          "manufacturing": "Precision drilling + EDM"
+        },
+        "fuel_manifold": {
+          "material": "Brass CW614N",
+          "inlet_size_mm": 12,
+          "gallery_depth_mm": 15,
+          "manufacturing": "CNC milling + brazing"
+        },
+        "oxidizer_manifold": {
+          "material": "Brass CW614N",
+          "inlet_size_mm": 16,
+          "gallery_depth_mm": 15,
+          "manufacturing": "CNC milling + brazing"
+        }
+      }
+    },
+    "plasma_igniter": {
+      "type": "Arc-Discharge Plasma Igniter (Pentagonal Array)",
+      "power_kW": 2.5,
+      "arc_voltage_V": 300,
+      "arc_current_A": 8.333333333333334,
+      "electrode_gap_mm": 0.6,
+      "number_of_electrodes": 293,
+      "electrode_diameter_mm": 4,
+      "material": "Tungsten-Thoriated (2% thorium)",
+      "parts": {
+        "electrodes": {
+          "count": 293,
+          "diameter_mm": 4.0,
+          "length_mm": 25,
+          "material": "Tungsten-Thoriated",
+          "tip_sharpness_angle_deg": 45,
+          "manufacturing": "Precision grinding"
+        },
+        "ceramic_insulator": {
+          "count": 293,
+          "material": "Alumina (Al2O3)",
+          "inner_diameter_mm": 5.0,
+          "outer_diameter_mm": 10,
+          "length_mm": 35,
+          "manufacturing": "Injection molding + sintering"
+        },
+        "high_voltage_connector": {
+          "type": "HV feedthrough 500V min",
+          "thread": "M16x1.5",
+          "material": "Stainless 316L ceramic-lined",
+          "manufacturing": "Precision assembly"
+        },
+        "ignition_circuit": {
+          "topology": "Tesla coil + DC sustain",
+          "primary_voltage_V": 12,
+          "secondary_voltage_V": 3500,
+          "frequency_kHz": 50,
+          "control": "Microcontroller + MOSFET switching"
+        }
+      }
+    },
+    "structure": {
+      "type": "Engine Mount + Support Frame",
+      "material": "Aluminum 7075-T6 (outer); Ductile Iron (mount blocks)",
+      "total_weight_estimate_kg": 0.15,
+      "parts": {
+        "forward_mount_ring": {
+          "material": "Ductile Iron FCD450",
+          "outer_diameter_mm": 2852.699510099479,
+          "thickness_mm": 40,
+          "bolt_holes": 6,
+          "bolt_size": "M12 SAE Grade 8.8",
+          "manufacturing": "Sand casting + CNC finishing"
+        },
+        "aft_nozzle_skirt": {
+          "material": "Aluminum 7075-T6",
+          "length_mm": 150,
+          "wall_thickness_mm": 3,
+          "purpose": "Thermal radiation shield + vibration isolation",
+          "manufacturing": "Extrusion + welding"
+        },
+        "center_mount_gimbal": {
+          "material": "Stainless 316L",
+          "pivot_diameter_mm": 25,
+          "angular_range_deg": 5,
+          "load_capacity_kN": 12.0,
+          "manufacturing": "CNC machining + honing"
+        }
+      }
+    }
+  },
+  "interfaces": {
+    "propellant": {
+      "fuel": "CH4 (liquid methane)",
+      "oxidizer": "LOX (liquid oxygen)",
+      "fuel_inlet": {
+        "port_size_mm": 12,
+        "thread": "SAE-4 JIC (SAE J518 Code 61)",
+        "temperature_rating_K": [
+          111,
+          120
+        ],
+        "pressure_rating_bar": 450.0,
+        "material": "Stainless 316L",
+        "seal": "PTFE-backed steel (Kalrez)"
+      },
+      "oxidizer_inlet": {
+        "port_size_mm": 16,
+        "thread": "SAE-6 JIC",
+        "temperature_rating_K": [
+          90,
+          95
+        ],
+        "pressure_rating_bar": 450.0,
+        "material": "Stainless 316L",
+        "seal": "PTFE-backed steel (Kalrez)"
+      },
+      "accessories": {
+        "isolation_valves": 2,
+        "check_valves": 2,
+        "relief_pressure_bar": 1.3,
+        "pressure_transducers": 2,
+        "vent_drains": 2
+      }
+    }
+  },
+  "thermal_management": {
+    "peak_heat_flux_MW_m2": 61.19047777710189,
+    "cooling_method": "Regenerative cooling + radiation",
+    "coolant": "Cryogenic propellant (CH4 or H2)",
+    "max_wall_temperature_K": 900,
+    "safety_margin_percent": 15
+  },
+  "electrical": {
+    "ignition_system": "Plasma arc (if enabled) or pyrotechnic backup",
+    "ignition_energy_kJ": 0.1,
+    "main_power_supply_V": 12,
+    "ignition_voltage_V": 3500,
+    "ignition_current_peak_A": 8.333333333333334,
+    "telemetry": {
+      "chamber_pressure_sensor": "Type: Strain-gauge",
+      "chamber_temp_thermocouple": "Type: Tungsten-Rhenium",
+      "nozzle_exit_temp_pyrometer": "Infrared, 1-5 um",
+      "mass_flow_sensor": "Coriolis meter"
+    }
+  },
+  "electrical_components": {
+    "pulse_capacitor": {
+      "type": "Film Capacitor (Polypropylene)",
+      "rated_voltage_V": 4000,
+      "capacitance_uF": 25.0,
+      "quantity": 1,
+      "physical_form": "Can-style or bar-lead",
+      "dimensions_mm": {
+        "diameter": 35,
+        "height": 65,
+        "lead_spacing": 27
+      },
+      "mass_kg": 0.18,
+      "mounting": "Bracket-based, vibration-isolated standoff",
+      "thermal_mgmt": "Aluminum heat sink, passive cooling",
+      "notes": "Low-ESR pulse-rated; spec for 100+ kA peak current capability"
+    },
+    "hv_feedthrough": {
+      "type": "High-voltage HV Feedthrough (M16 threaded)",
+      "rated_voltage_V": 5000,
+      "current_rating_A": 50,
+      "sealing": "Grease/epoxy with O-ring groove",
+      "dimensions_mm": {
+        "thread_diameter": 16,
+        "mounting_depth": 35,
+        "cable_entry": 10
+      },
+      "material": "Stainless 316L ceramic-lined",
+      "mass_kg": 0.12,
+      "creepage_clearance_IEC": "12 mm air gap (5 kV)",
+      "pressure_rating_bar": 5,
+      "location": "Upper front of igniter housing"
+    },
+    "supercap_battery": {
+      "type": "Supercapacitor (Large-cell series stack)",
+      "capacitance_F": 2.5,
+      "voltage_rating_V": 16,
+      "quantity": 1,
+      "form_factor": "Series stack 3x 10 F / 5.4 V cells",
+      "dimensions_mm": {
+        "diameter": 35,
+        "height": 120,
+        "terminal_spacing": 30
+      },
+      "mass_kg": 0.85,
+      "mounting_location": "Side-mounted bracket on engine skirt",
+      "thermal_mgmt": "Thermal pad to engine body",
+      "pressure_case": "Aluminum can, 20 bar vent",
+      "notes": "Maxwell or equivalent; ESR ~0.5 m\u03a9 per cell"
+    },
+    "hv_charger_module": {
+      "type": "Isolated DC-DC Converter (12V \u2192 3500V)",
+      "input_voltage_V": 12,
+      "output_voltage_V": 3500,
+      "output_current_max_mA": 200,
+      "isolation_kV": 5,
+      "switching_frequency_kHz": 50,
+      "efficiency_pct": 85,
+      "dimensions_mm": {
+        "length": 80,
+        "width": 50,
+        "height": 40
+      },
+      "mass_kg": 0.35,
+      "mounting": "Potted module, aluminum bracket on frame",
+      "thermal_mgmt": "Heatsink + forced-air convection (if engine bay temp >60C)",
+      "connectors": "Molex or DT series connectors, mil-spec grade"
+    },
+    "hv_switch": {
+      "type": "Triggered Spark Gap or SiC MOSFET Stack",
+      "option_1_triggered_gap": {
+        "form": "Commercial triggered spark gap module",
+        "impulse_current_kA": 50,
+        "voltage_rating_kV": 4,
+        "trigger_voltage_V": 300,
+        "delay_time_ns": 500,
+        "dimensions_mm": {
+          "length": 60,
+          "diameter": 40
+        },
+        "mass_kg": 0.25,
+        "mounting": "Ceramic insulator stand, HV feedthrough"
+      },
+      "option_2_mosfet_stack": {
+        "form": "Series-stacked SiC MOSFETs (e.g., 6x Cree C3M0120090D)",
+        "voltage_rating_per_device_V": 1200,
+        "total_stack_voltage_V": 3500,
+        "current_rating_peak_A": 100,
+        "gate_drive": "Isolated gate driver IC per MOSFET + fiber optics for common-mode",
+        "dimensions_mm": {
+          "pcb_length": 100,
+          "pcb_width": 80,
+          "heatsink_height": 50
+        },
+        "mass_kg": 0.6,
+        "thermal_mgmt": "Copper heatsink + thermal paste, active cooling optional"
+      },
+      "recommendation": "Use triggered spark gap for robustness; SiC stack for precise control"
+    },
+    "recovery_clamp": {
+      "type": "Active Clamp with Bidirectional Converter",
+      "topology": "Resonant LC tank + active switch + sync rectifier",
+      "recovery_efficiency_pct": 70,
+      "components": {
+        "storage_inductor_uH": 5,
+        "clamp_capacitor_uF": 10,
+        "mosfet_pair_gate_driver": "Dual-channel opto-isolated gate driver"
+      },
+      "dimensions_mm": {
+        "pcb_length": 100,
+        "pcb_width": 60,
+        "heatsink_height": 30
+      },
+      "mass_kg": 0.2,
+      "location": "Adjacent to pulse cap; integrated on power PCB"
+    },
+    "bidirectional_dcdc": {
+      "type": "Bidirectional DC-DC Converter (12V \u2194 16V buffer)",
+      "input_output_V": [
+        12,
+        16
+      ],
+      "max_power_W": 1000,
+      "efficiency_pct": 92,
+      "topology": "Synchronous buck-boost with SiC MOSFETs",
+      "dimensions_mm": {
+        "length": 120,
+        "width": 80,
+        "height": 50
+      },
+      "mass_kg": 0.5,
+      "mounting": "Power distribution module, co-located with main DC-DC",
+      "thermal_mgmt": "Dual heatsinks + thermal interface"
+    },
+    "measurement_sensing": {
+      "hv_divider": {
+        "type": "Resistive HV voltage divider (pulse cap monitoring)",
+        "ratio": 1000,
+        "component_values": "1 M\u03a9 (HV) + 1 k\u03a9 (low) in series",
+        "measurement_range_V": 0.35,
+        "bandwidth_kHz": 100,
+        "location": "Pulse cap terminal"
+      },
+      "current_sensing_rogowski": {
+        "type": "Rogowski coil on HV feedthrough",
+        "sensitivity_mV_A": 1.0,
+        "bandwidth_MHz": 1,
+        "integration_time_us": 100,
+        "location": "Around main HV conductor"
+      },
+      "thermocouple_array": {
+        "type": "K-type thermocouples",
+        "measurement_points": [
+          "capacitor_can",
+          "charger_heatsink",
+          "switch_heatsink"
+        ],
+        "opto_isolation": "Isolated thermocouple module"
+      }
+    },
+    "control_electronics": {
+      "microcontroller": {
+        "type": "ARM Cortex-M4 (e.g., STM32F407)",
+        "functions": [
+          "Pulse timing and trigger generation",
+          "Charger control and ramp-up logic",
+          "Telemetry and data logging",
+          "Safety interlocks and fault detection",
+          "Energy recovery monitoring"
+        ],
+        "i_o": [
+          "ADC (voltage, current, temp)",
+          "PWM (gate drive)",
+          "CAN (telemetry)"
+        ],
+        "programming": "Real-time bare-metal or RTOS"
+      },
+      "gate_drivers": {
+        "quantity": 3,
+        "types": [
+          "Charger gate driver (isolated)",
+          "Switch gate driver (if MOSFET)",
+          "Converter gate driver (dual-channel)"
+        ],
+        "isolation_kV": 4,
+        "dead_time_ns": 100
+      },
+      "power_supply": {
+        "type": "Isolated 5V @ 1A and 12V @ 0.5A rails",
+        "input": "12V main bus",
+        "redundancy": "Dual independent 5V regulators"
+      }
+    }
+  },
+  "mechanical_integration": {
+    "electrical_harness": {
+      "main_bus_conductors": {
+        "material": "Stranded Cu, 2 AWG (33 mm\u00b2) rated 50A @ 12V",
+        "routing": "Along engine left side in cable tray",
+        "connectors": "Anderson SB50 or similar for main power"
+      },
+      "hv_pulse_conductor": {
+        "material": "Coaxial HV cable, 5 kV rated, Cu braid shield",
+        "length_m": 0.5,
+        "routing": "Armored conduit from switch to feedthrough",
+        "termination": "Crimp ring terminals, potted with silicone"
+      },
+      "signal_harness": {
+        "material": "Shielded twisted pair for analog/digital",
+        "routing": "Separate from HV; runs along opposite engine flank",
+        "connectors": "MIL-DTL-26482 or similar"
+      },
+      "cooling_lines": {
+        "diameter_mm": 6,
+        "routing": "From engine coolant outlet to charger and converter heatsinks",
+        "fittings": "SAE J518 Code 61 quick-disconnects"
+      }
+    },
+    "mounting_frame": {
+      "supercap_bracket": {
+        "material": "Aluminum 6061-T6",
+        "attachment": "Four M8 bolts to engine aft skirt",
+        "vibration_isolators": "Silicone elastomer bushings"
+      },
+      "power_module_tray": {
+        "dimensions_mm": [
+          200,
+          150,
+          80
+        ],
+        "material": "Aluminum extrusion",
+        "thermal_interface": "Kapton + thermal paste to engine structure",
+        "location": "Forward of gimbal joint"
+      },
+      "hv_feedthrough_boss": {
+        "material": "Stainless 316L, integrated into injector cowl",
+        "bolt_pattern": "M16 thread + lock-nut torque 50 Nm"
+      }
+    }
+  },
+  "cad_design_notes": {
+    "priority_1_ensure": [
+      "Creepage/clearance per IEC 60664 (5 kV, pollution degree 2)",
+      "Thermal paths from all power components to engine body or coolant",
+      "Mechanical retention for all electrical boxes (> 10 g vibration proof)",
+      "Shielding and grounding of HV return path (star-point at main battery negative)"
+    ],
+    "priority_2_optimize": [
+      "Minimize HV conductor loop area to reduce EMI radiated emissions",
+      "Symmetrical positioning of supercap and charger for CG balance",
+      "Easy access to capacitor bleed plug for safe de-energization",
+      "Thermal margin: all semiconductors \u2264 85\u00b0C junction @ 60\u00b0C ambient + 1 kW dissipation"
+    ],
+    "test_checkpoints": [
+      "Insulation resistance: >100 M\u03a9 @ 500 V DC (pulse cap and feedthrough)",
+      "Creepage distance verification with dial gauge on 3D model",
+      "Thermal FEA: steady-state and transient pulse heating",
+      "Shock/vibe test (MIL-STD-810) for electrical boxes and harness routing"
+    ],
+    "cad_files_to_generate": [
+      "PowerModule_Tray_Assembly.STEP",
+      "HV_Feedthrough_Housing.STEP",
+      "Supercap_Bracket_Mount.STEP",
+      "Electrical_Harness_Routing_Study.STEP",
+      "2D_Drawing_Electrical_Integration_Layout.PDF"
+    ]
+  }
+}
