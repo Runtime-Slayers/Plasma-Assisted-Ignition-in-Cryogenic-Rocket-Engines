@@ -1,0 +1,7 @@
+metric,value,unit,note
+mission_sustain_energy,1.50,MJ,600 s modeled mission at 2.5 kW
+required_battery_capacity,40.85,Ah,Sized at 85% overall efficiency
+pulse_energy,100,J,Design discharge energy
+recovered_energy_per_pulse,70,J,Modeled recovery-path return
+ch4_o2_isp_uplift,6,%,Conservative thermochemical comparison
+h2_o2_isp_uplift,12,%,Validated comparison envelope
